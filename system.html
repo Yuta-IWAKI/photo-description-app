@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo and Description App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Photo and Description App</h1>
+        <select id="themeSelector">
+            <option value="nature">Nature</option>
+            <option value="history">History</option>
+            <option value="culture">Culture</option>
+        </select>
+        <button id="startButton">Start</button>
+        <div id="photoSection" style="display: none;">
+            <input type="file" accept="image/*" id="photoInput">
+            <img id="photoPreview" alt="Photo Preview" style="display: none;">
+            <textarea id="descriptionInput" placeholder="Enter your description here..."></textarea>
+            <button id="submitButton">Submit</button>
+        </div>
+        <div id="resultsSection" style="display: none;">
+            <h2>Submitted Results</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
