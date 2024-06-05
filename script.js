@@ -6,45 +6,77 @@ let penColor = document.getElementById('colorPicker').value;
 let paths = []; // 描画されたパスを保存する配列
 let currentPath = [];
 
-canvas.addEventListener('mousedown', (e) => {
-    drawing = true;
-    currentPath = [];
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    currentPath.push({ x: x, y: y, color: penColor });
-});
-
-canvas.addEventListener('mousemove', (e) => {
-    if (!drawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = penColor;
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    currentPath.push({ x: x, y: y, color: penColor });
-});
-
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', endDrawing);
 canvas.addEventListener('mouseout', endDrawing);
 
-function endDrawing() {
-    if (!drawing) return;
-    drawing = false;
-    paths.push(currentPath);
-    ctx.beginPath();
-}
+canvas.addEventListener('touchstart', startDrawing, false);
+canvas.addEventListener('touchmove', draw, false);
+canvas.addEventListener('touchend', endDrawing, false);
+canvas.addEventListener('touchcancel', endDrawing, false);
 
 document.getElementById('colorPicker').addEventListener('input', (e) => {
     penColor = e.target.value;
 });
+
+function getMousePos(canvas, evt) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+        y: (evt.clientY - rect.top) * (canvas.height / rect.height)
+    };
+}
+
+function getTouchPos(canvas, touch) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (touch.clientX - rect.left) * (canvas.width / rect.width),
+        y: (touch.clientY - rect.top) * (canvas.height / rect.height)
+    };
+}
+
+function startDrawing(evt) {
+    drawing = true;
+    currentPath = [];
+    let pos;
+    if (evt.touches) {
+        pos = getTouchPos(canvas, evt.touches[0]);
+    } else {
+        pos = getMousePos(canvas, evt);
+    }
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    currentPath.push({ x: pos.x, y: pos.y, color: penColor });
+    evt.preventDefault();
+}
+
+function draw(evt) {
+    if (!drawing) return;
+    let pos;
+    if (evt.touches) {
+        pos = getTouchPos(canvas, evt.touches[0]);
+    } else {
+        pos = getMousePos(canvas, evt);
+    }
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = penColor;
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    currentPath.push({ x: pos.x, y: pos.y, color: penColor });
+    evt.preventDefault();
+}
+
+function endDrawing(evt) {
+    if (!drawing) return;
+    drawing = false;
+    paths.push(currentPath);
+    ctx.beginPath();
+    evt.preventDefault();
+}
 
 document.getElementById('photoInput').addEventListener('change', (e) => {
     const file = e.target.files[0];
