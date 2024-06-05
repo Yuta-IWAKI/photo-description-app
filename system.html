@@ -1,30 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo and Description App</title>
+    <title>お絵描き共有アプリ</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Photo and Description App</h1>
-        <select id="themeSelector">
-            <option value="nature">Nature</option>
-            <option value="history">History</option>
-            <option value="culture">Culture</option>
-        </select>
-        <button id="startButton">Start</button>
-        <div id="photoSection" style="display: none;">
-            <input type="file" accept="image/*" id="photoInput">
-            <img id="photoPreview" alt="Photo Preview" style="display: none;">
-            <textarea id="descriptionInput" placeholder="Enter your description here..."></textarea>
-            <button id="submitButton">Submit</button>
-        </div>
-        <div id="resultsSection" style="display: none;">
-            <h2>Submitted Results</h2>
-            <div id="results"></div>
-        </div>
+        <h1>お絵描き共有アプリ</h1>
+        <input type="text" id="themeInput" placeholder="テーマを入力してください">
+        <input type="file" accept="image/*" id="photoInput">
+        <label for="colorPicker">ペンの色:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <canvas id="drawingCanvas"></canvas>
+        <button id="undoButton">一つ戻る</button>
+        <button id="downloadButton">ダウンロード</button>
+        <div id="gallery"></div>
+        <a href="https://forms.gle/gdtT9qMZaNBA4Ra18" target="_blank" class="button">Googleフォームで画像をアップロード</a>
     </div>
     <script src="script.js"></script>
 </body>
