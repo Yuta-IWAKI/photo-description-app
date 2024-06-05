@@ -120,7 +120,7 @@ document.getElementById('undoButton').addEventListener('click', () => {
 document.getElementById('downloadButton').addEventListener('click', () => {
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
-    link.download = 'download.png';
+    link.download = 's102_19.png';
     link.click();
 });
 
